@@ -5,6 +5,20 @@ import { Button } from 'antd';
 import { MailOutlined, GoogleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+//below function pass token to backend in headers so body tokne in empty passed
+const CreateOrUpdateUser = async(authtoken) => {
+    return await axios.post(`${process.env.REACT_APP_API}/create-or-update-user`, {}, {
+        headers: {
+            authtoken,
+        }
+    });
+}
+
+
+
+
 // below funtion is used to initialze variable (email) & also contains other function (handlesubmit) within.
 
 const Login = ({ history }) => {
@@ -31,16 +45,21 @@ const Login = ({ history }) => {
         try {
             const result = await auth.signInWithEmailAndPassword(email, password);
             const { user } = result
-            const idTokenResults = await user.getIdTokenResult()
+            const idTokenResults = await user.getIdTokenResult();
+            CreateOrUpdateUser(idTokenResults.token)
+            .then((res) => console.log("create or update res", res))
+            .catch();
 
-            dispatch({
-                type: "Logged_In_User",
-                payload: {
-                    email: user.email,
-                    token: idTokenResults
-                },
-            });
-            history.push('/');
+
+
+            // dispatch({
+            //     type: "Logged_In_User",
+            //     payload: {
+            //         email: user.email,
+            //         token: idTokenResults
+            //     },
+            // });
+            // history.push('/');
 
         } catch (error) {
             console.log(error);
