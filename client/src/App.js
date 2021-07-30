@@ -15,6 +15,8 @@ import { useDispatch } from 'react-redux';
 import { identifier } from 'babel-types';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import {currentUser} from './functions/auth';
+import History  from './pages/user/History';
+import UserRoutes from './components/nav/routes/UserRoutes';
 
 const App = () => {
 
@@ -56,6 +58,7 @@ const App = () => {
         <Route exact path="/Register" component={Register} />
         <Route exact path="/Register/Complete" component={RegisterComplete} />
         <Route exact path="/Forgot/Password" component={ForgotPassword} />
+        <UserRoutes exact path="/user/History" component={History} />
       </Switch>
     </div>
   );
