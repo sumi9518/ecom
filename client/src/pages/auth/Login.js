@@ -6,15 +6,8 @@ import { MailOutlined, GoogleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { CreateOrUpdateUser } from '../../functions/auth';
 
-//below function pass token to backend in headers so body tokne in empty passed
-const CreateOrUpdateUser = async(authtoken) => {
-    return await axios.post(`${process.env.REACT_APP_API}/create-or-update-user`, {}, {
-        headers: {
-            authtoken,
-        }
-    });
-}
 
 
 
@@ -31,6 +24,17 @@ const Login = ({ history }) => {
 
     let dispatch = useDispatch();
 
+const roleBasedRedirect= (res) => {
+    if(res.data.role === "admin"){
+    history.push('/admin/dashboard');
+    } else {
+        history.push('/user/history');
+    }
+};
+
+
+
+
     useEffect(() => {
         if (user && user.token) {
             history.push("/");
@@ -46,20 +50,27 @@ const Login = ({ history }) => {
             const result = await auth.signInWithEmailAndPassword(email, password);
             const { user } = result
             const idTokenResults = await user.getIdTokenResult();
-            CreateOrUpdateUser(idTokenResults.token)
-            .then((res) => console.log("create or update res", res))
-            .catch();
+            
+            CreateOrUpdateUser(idTokenResults.token)        //Below data dnot persist in redux after refresh, so we make req to own DB in App.js
+            .then((res) => {
+                dispatch({
+                    type: "Logged_In_User",
+                    payload: {
+                        name: res.data.name,
+                        email: res.data.email,
+                        token: idTokenResults.token,
+                        role: res.data.role,
+                        uid: res.data._id
+                    },
+                });
 
+                roleBasedRedirect(res);
 
+            })
+            .catch(err => console.log(err));
 
-            // dispatch({
-            //     type: "Logged_In_User",
-            //     payload: {
-            //         email: user.email,
-            //         token: idTokenResults
-            //     },
-            // });
-            // history.push('/');
+           
+            //history.push('/');
 
         } catch (error) {
             console.log(error);
@@ -73,14 +84,23 @@ const Login = ({ history }) => {
             .then(async (result) => {
                 const { user } = result
                 const idTokenResult = await user.getIdTokenResult();
-                dispatch({
-                    type: "Logged_In_User",
-                    payload: {
-                        email: user.email,
-                        token: idTokenResult
-                    },
-                });
-                history.push('/');
+                CreateOrUpdateUser(idTokenResult.token)        //Below data dnot persist in redux after refresh, so we make req to own DB in App.js
+                .then((res) => {
+                    dispatch({
+                        type: "Logged_In_User",
+                        payload: {
+                            name: res.data.name,
+                            email: res.data.email,
+                            token: idTokenResult.token,
+                            role: res.data.role,
+                            uid: res.data._id
+                        },
+                    });
+                    roleBasedRedirect(res);
+                })
+                .catch();
+    
+                //history.push('/');
 
             })
             .catch((err) => {

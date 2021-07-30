@@ -14,23 +14,32 @@ import { auth } from './firebase';
 import { useDispatch } from 'react-redux';
 import { identifier } from 'babel-types';
 import ForgotPassword from './pages/auth/ForgotPassword';
+import {currentUser} from './functions/auth';
 
 const App = () => {
 
   const dispatch = useDispatch();
 
   ///to check firebase auth state
-  useEffect(() => {
+  useEffect(() => {                                   //UseEffect runs each time page is updated, so best place to get use data & store for overall app
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const idTokenResult = await user.getIdTokenResult();
-        dispatch({
-          type: "Logged_In_User",
-          payload: {
-            email: user.email,
-            token: idTokenResult.token,
-          },
-        });
+        const idTokenResult = await user.getIdTokenResult();    //This data will persist in redx from DB (created endpoint)
+        currentUser(idTokenResult.token)        //Below data dnot persist in redux after refresh, so we make req to own DB in App.js
+                .then((res) => {
+                    dispatch({
+                        type: "Logged_In_User",
+                        payload: {
+                            name: res.data.name,
+                            email: res.data.email,
+                            token: idTokenResult.token,
+                            role: res.data.role,
+                            uid: res.data._id
+                        },
+                    });
+    
+                })
+                .catch(err => console.log(err));
       }
     });
     //clean up
