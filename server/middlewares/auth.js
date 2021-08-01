@@ -1,5 +1,6 @@
 const admin = require("../firebase");
 //This function will check user token with firebase after login to app & based on result data will be inserted in DB
+const User = require("../models/user")
 
 exports.authCheck = async (req, res, next) => {
     //console.log(req.headers); //token
@@ -24,7 +25,7 @@ exports.adminCheck = async (req, res, next) => {            //gets data based on
     const adminUser = await User.findOne({ email }).exec();
     if (adminUser.role !== 'admin') {
         res.status(403).json({
-            err: "Admin Resource. Acess Denied.",
+            err: "Admin Resource. Access Denied.",
         });
     } else {
         next();
