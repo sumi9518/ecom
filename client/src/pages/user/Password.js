@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import UserNav from '../../components/nav/UserNav';
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
-import LoadingToRedirect from '../../components/nav/routes/LoadingToRedirect';
+
 
 const Password = (e) => {
     const [password, setPassword] = useState("");

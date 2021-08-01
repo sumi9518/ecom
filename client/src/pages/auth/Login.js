@@ -5,7 +5,6 @@ import { Button } from 'antd';
 import { MailOutlined, GoogleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { CreateOrUpdateUser } from '../../functions/auth';
 
 
@@ -24,13 +23,13 @@ const Login = ({ history }) => {
 
     let dispatch = useDispatch();
 
-const roleBasedRedirect= (res) => {
-    if(res.data.role === "admin"){
-    history.push('/admin/dashboard');
-    } else {
-        history.push('/user/history');
-    }
-};
+    const roleBasedRedirect = (res) => {
+        if (res.data.role === "admin") {
+            history.push('/admin/dashboard');
+        } else {
+            history.push('/user/history');
+        }
+    };
 
 
 
@@ -39,7 +38,7 @@ const roleBasedRedirect= (res) => {
         if (user && user.token) {
             history.push("/");
         }
-    }, [user]); //as soon as we have user or user changes we redirect (useEffect runs when comp mounts)
+    }, [user, history]); //as soon as we have user or user changes we redirect (useEffect runs when comp mounts)
 
 
     //In below function  data is passed and result in sending automated email to user.
@@ -50,26 +49,26 @@ const roleBasedRedirect= (res) => {
             const result = await auth.signInWithEmailAndPassword(email, password);
             const { user } = result
             const idTokenResults = await user.getIdTokenResult();
-            
+
             CreateOrUpdateUser(idTokenResults.token)        //Below data dnot persist in redux after refresh, so we make req to own DB in App.js
-            .then((res) => {
-                dispatch({
-                    type: "Logged_In_User",
-                    payload: {
-                        name: res.data.name,
-                        email: res.data.email,
-                        token: idTokenResults.token,
-                        role: res.data.role,
-                        uid: res.data._id
-                    },
-                });
+                .then((res) => {
+                    dispatch({
+                        type: "Logged_In_User",
+                        payload: {
+                            name: res.data.name,
+                            email: res.data.email,
+                            token: idTokenResults.token,
+                            role: res.data.role,
+                            uid: res.data._id
+                        },
+                    });
 
-                roleBasedRedirect(res);
+                    roleBasedRedirect(res);
 
-            })
-            .catch(err => console.log(err));
+                })
+                .catch(err => console.log(err));
 
-           
+
             //history.push('/');
 
         } catch (error) {
@@ -85,21 +84,21 @@ const roleBasedRedirect= (res) => {
                 const { user } = result
                 const idTokenResult = await user.getIdTokenResult();
                 CreateOrUpdateUser(idTokenResult.token)        //Below data dnot persist in redux after refresh, so we make req to own DB in App.js
-                .then((res) => {
-                    dispatch({
-                        type: "Logged_In_User",
-                        payload: {
-                            name: res.data.name,
-                            email: res.data.email,
-                            token: idTokenResult.token,
-                            role: res.data.role,
-                            uid: res.data._id
-                        },
-                    });
-                    roleBasedRedirect(res);
-                })
-                .catch();
-    
+                    .then((res) => {
+                        dispatch({
+                            type: "Logged_In_User",
+                            payload: {
+                                name: res.data.name,
+                                email: res.data.email,
+                                token: idTokenResult.token,
+                                role: res.data.role,
+                                uid: res.data._id
+                            },
+                        });
+                        roleBasedRedirect(res);
+                    })
+                    .catch();
+
                 //history.push('/');
 
             })

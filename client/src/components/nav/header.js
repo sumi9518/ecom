@@ -58,7 +58,7 @@ const Header = () => {                                          //Funtional comp
                         <SubMenu key="userdata" icon={<SettingOutlined />} title={user.email && user.email.split('@')[0]} >
                             <Item key="7">Option 7</Item>
                             <Item key="8">Option 8</Item>
-                            <Item icon={<LoginOutlined />} onClick={Logout}>Logout</Item>
+                            <Item key="logout" icon={<LoginOutlined />} onClick={Logout}>Logout</Item>
                         </SubMenu>
                     )
                 }

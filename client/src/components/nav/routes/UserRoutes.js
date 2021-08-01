@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import LoadingToRedirect from './LoadingToRedirect';
 import { useSelector } from 'react-redux';
 

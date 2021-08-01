@@ -13,7 +13,7 @@ const ForgotPassword = ({ history }) => {
         if (user && user.token) {
             history.push("/");
         }
-    }, [user]); //as soon as we have user or user changes we redirect (useEffect runs when comp mounts)
+    }, [user, history]); //as soon as we have user or user changes we redirect (useEffect runs when comp mounts)
 
 
     const handleSubmit = async (e) => {

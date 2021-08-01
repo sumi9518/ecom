@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Register from './pages/auth/Register';
@@ -12,7 +12,6 @@ import RegisterComplete from "./pages/auth/RegisterComplete";
 
 import { auth } from './firebase';
 import { useDispatch } from 'react-redux';
-import { identifier } from 'babel-types';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import { currentUser } from './functions/auth';
 import History from './pages/user/History';
@@ -20,8 +19,8 @@ import UserRoutes from './components/nav/routes/UserRoutes';
 import Password from './pages/user/Password';
 import Wishlist from './pages/user/Wishlist';
 
-
-
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminRoutes from './components/nav/routes/AdminRoutes';
 
 const App = () => {
 
@@ -51,7 +50,7 @@ const App = () => {
     });
     //clean up
     return () => unsubscribe();
-  }, [])
+  }, [dispatch])
 
   return (
     <div>
@@ -66,6 +65,7 @@ const App = () => {
         <UserRoutes exact path="/user/History" component={History} />
         <UserRoutes exact path="/user/Password" component={Password} />
         <UserRoutes exact path="/user/Wishlist" component={Wishlist} />
+        <AdminRoutes exact path="/admin/dashboard" component={AdminDashboard} />
       </Switch>
     </div>
   );

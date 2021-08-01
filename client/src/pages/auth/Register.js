@@ -14,7 +14,7 @@ const Register = ({ history }) => {
         if (user && user.token) {
             history.push("/");
         }
-    }, [user]); //as soon as we have user or user changes we redirect (useEffect runs when comp mounts)
+    }, [user, history]); //as soon as we have user or user changes we redirect (useEffect runs when comp mounts)
 
 
     //In below function  data is passed and result in sending automated email to user.

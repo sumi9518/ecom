@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import { CreateOrUpdateUser } from '../../functions/auth';
 
 
 // below funtion is used to initialze variable (email) & also contains other function (handlesubmit) within.
@@ -12,10 +11,10 @@ const RegisterComplete = ({ history }) => {
     const [email, setEmail] = useState("");                                   //initializing
     const [password, setPassword] = useState('');                              //props.history for props OR {history}
 
-    const { user } = useSelector((state) => ({ ...state }));
+    //const { user } = useSelector((state) => ({ ...state }));
     let dispatch = useDispatch();
-    
-    const CreateOrUpdateUser = async(authtoken) => {
+
+    const CreateOrUpdateUser = async (authtoken) => {
         return await axios.post(`${process.env.REACT_APP_API}/create-or-update-user`, {}, {     //data passed to auth.js in server middleware
             headers: {
                 authtoken,
@@ -26,7 +25,7 @@ const RegisterComplete = ({ history }) => {
     useEffect(() => {
         setEmail(window.localStorage.getItem('email'));
 
-    }, [])                                                                    //takes first argument & dependency e.g [password] so when password change the func will run
+    }, [history])                                                                    //takes first argument & dependency e.g [password] so when password change the func will run
 
     //In below function  data is passed and result in sending automated email to user.
 
@@ -58,20 +57,20 @@ const RegisterComplete = ({ history }) => {
                 //console.log('user', user, 'idtoken', idTokenResult);
                 // redux store
                 CreateOrUpdateUser(idTokenResult.token)        //Below data dnot persist in redux after refresh, so we make req to own DB in App.js
-                .then((res) => {
-                    dispatch({
-                        type: "Logged_In_User",
-                        payload: {
-                            name: res.data.name,
-                            email: res.data.email,
-                            token: idTokenResult.token,
-                            role: res.data.role,
-                            uid: res.data._id
-                        },
-                    });
-    
-                })
-                .catch(err => console.log(err));
+                    .then((res) => {
+                        dispatch({
+                            type: "Logged_In_User",
+                            payload: {
+                                name: res.data.name,
+                                email: res.data.email,
+                                token: idTokenResult.token,
+                                role: res.data.role,
+                                uid: res.data._id
+                            },
+                        });
+
+                    })
+                    .catch(err => console.log(err));
 
                 //redirect user
                 history.push('/');
