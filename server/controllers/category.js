@@ -21,10 +21,14 @@ exports.read = async (req, res) => {
     res.json(category);
 };
 
+//update takes 2 arguments first to find and second to update. new true is used to get updated one in res json
 exports.update = async (req, res) => {
     const { name } = req.body;
     try {
-        const updated = await Category.findOneAndUpdate({ slug: req.params.slug }, { name, slug: slugify(name) }, { new: true });
+        const updated = await Category.findOneAndUpdate(
+            { slug: req.params.slug },
+            { name, slug: slugify(name) },
+            { new: true });
         res.json(updated);
     } catch (err) {
         res.status(400).send("Create Update Failed");

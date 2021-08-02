@@ -56,8 +56,17 @@ const Header = () => {                                          //Funtional comp
                 {
                     user && (
                         <SubMenu key="userdata" icon={<SettingOutlined />} title={user.email && user.email.split('@')[0]} >
-                            <Item key="7">Option 7</Item>
-                            <Item key="8">Option 8</Item>
+                            {user && user.role === "subscriber" && (
+                                <Item>
+                                    <Link to="/user/history">Dashboard</Link>
+                                </Item>
+                            )}
+
+                            {user && user.role === "admin" && (
+                                <Item>
+                                    <Link to="/admin/dashboard">Dashboard</Link>
+                                </Item>
+                            )}
                             <Item key="logout" icon={<LoginOutlined />} onClick={Logout}>Logout</Item>
                         </SubMenu>
                     )
