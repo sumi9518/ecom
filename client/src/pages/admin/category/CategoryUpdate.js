@@ -3,7 +3,7 @@ import AdminNav from '../../../components/nav/AdminNav';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { getCategory, updateCategory } from '../../../functions/category';
-
+import CategoryForm from '../../../components/nav/forms/CategoryForm';
 
 const CategoryUpdate = ({ history, match }) => {
 
@@ -71,7 +71,12 @@ const CategoryUpdate = ({ history, match }) => {
                 </div>
                 <div className="col">
                     {loading ? (<h4 className="text-danger">Loading..</h4>) : (<h4>Create Category Page</h4>)}
-                    {categoryForm()}
+                    <CategoryForm
+                        handleSubmit={handleSubmit}
+                        name={name}
+                        setName={setName}
+                    />
+
                     <hr />
                 </div>
             </div>
