@@ -7,6 +7,7 @@ exports.create = async (req, res) => {
         const category = await new Category({ name, slug: slugify(name) }).save();
         res.json(category);
     } catch (err) {
+        cosole.log("Category Create error -->", err)
         res.status(400).send("create category failed");
     }
 };
@@ -31,7 +32,8 @@ exports.update = async (req, res) => {
             { new: true });
         res.json(updated);
     } catch (err) {
-        res.status(400).send("Create Update Failed");
+        cosole.log("Category Update error -->", err)
+        res.status(400).send("Category Update Failed");
     }
 };
 
@@ -41,6 +43,7 @@ exports.remove = async (req, res) => {
         res.json(deleted);
 
     } catch (err) {
-        res.status(400).send("Create Delete Failed");
+        cosole.log("Category Remove error -->", err)
+        res.status(400).send("Category Delete Failed");
     }
 };
