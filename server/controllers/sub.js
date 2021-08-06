@@ -1,4 +1,4 @@
-const Sub = require('../models/Sub');
+const Sub = require('../models/sub');
 const slugify = require("slugify");
 
 exports.create = async (req, res) => {

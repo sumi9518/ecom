@@ -14,7 +14,7 @@ const {
     update,
     remove,
     list
-} = require("../controllers/Sub"); //importing from  controller
+} = require("../controllers/sub"); //importing from  controller
 
 
 //route - take's the request eg /api and give response
