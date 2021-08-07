@@ -2,7 +2,7 @@ import React from 'react';
 import Resizer from 'react-image-file-resizer';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import {Avatar} from 'antd';
+import {Avatar, Badge} from 'antd';
 
 
 const FileUpload = ({ values, setValues, setLoading }) => {
@@ -53,23 +53,51 @@ const FileUpload = ({ values, setValues, setLoading }) => {
         }
 
         //Send back to server to upload to cloudinary
-
         //res is img url then set url to images[] in parent component (productCreate)
 
+    }
+    const handleImageRemove = (public_id) => {
+        setLoading(true);
+       // console.log('remove image',id);
 
-
+       axios.post(`${process.env.REACT_APP_API}//removeimage`, {public_id},
+       {
+           headers: {
+               authtoken: user ? user.token : "",
+           },
+       }
+       )
+       .then((res)=>{
+           setLoading(false);
+           const {images} = values;
+           let filteredImages = images.filter((eachimg) => {
+               return eachimg.public_id !== public_id;
+           });
+           setValues({...values,images:filteredImages});
+       })
+    .catch((err)=>{
+        console.log(err);
+        setLoading(false);
+    });
     }
     return (
 
         <div>
         <div>
             {values.images && values.images.map((image)=>(
+                <Badge 
+                count="X" 
+                key={image.public_id}  
+                onClick={() => handleImageRemove(image.public_id)}   
+                style={{cursor:"pointer"}}
+                > 
                 <Avatar 
-                key={image.public_id} 
                 src={image.url}
                 size={100}
-                className="m-3"
+                shape="square"
+                className="ml-3 mb-3"
                 />
+                </Badge>
             ))}
         </div>
         <div className="row">
