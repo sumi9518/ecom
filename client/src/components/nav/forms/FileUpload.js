@@ -37,7 +37,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
                         })
 
                             .then(res => {
-                                console.log("Image Uplaod Res Data", res);
+                                console.log("Image uploaded Res Data", res);
                                 setLoading(false);
                                 allUploadedFiles.push(res.data);
                                 setValues({ ...values, images: allUploadedFiles });
@@ -70,10 +70,12 @@ const FileUpload = ({ values, setValues, setLoading }) => {
        .then((res)=>{
            setLoading(false);
            const {images} = values;
+
+           //below func sort out images after removal, filteredImages contains images expect deleted one
            let filteredImages = images.filter((eachimg) => {
                return eachimg.public_id !== public_id;
            });
-           setValues({...values,images:filteredImages});
+           setValues({...values,images:filteredImages}); //updating state, remaining images to state after deleting
        })
     .catch((err)=>{
         console.log(err);

@@ -16,12 +16,23 @@ exports.create = async (req, res) => {
     }
 };
 
-exports.read = async (req, res) => {
+//can populate only if ref is added in models, populate give entire details of given field
+
+exports.listAll = async (req, res) => {
     try {
-        let products = await Product.find({});
+        let products = await Product.find({})
+        .limit(parseInt(req.params.count))
+        .populate("category")
+        .populate("subs")
+        .sort([["createdAt","desc"]])
+        .exec();
         res.json(products);
     }
     catch (err) {
-
+        console.log(err);
+        // res.status(400).send("Create product failed");
+        res.status(400).json({
+            err: err.message
+        });
     }
 }

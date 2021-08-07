@@ -8,12 +8,12 @@ const { authCheck, adminCheck } = require('../middlewares/auth');
 
 
 //controller
-const { create, read } = require("../controllers/product"); //importing from  controller
+const { create, listAll } = require("../controllers/product"); //importing from  controller
 
 
 //route - take's the request eg /api and give response
 router.post("/product", authCheck, adminCheck, create);
-router.get("/products", read);
+router.get("/products/:count", listAll);
 
 
 
