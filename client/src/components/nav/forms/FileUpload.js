@@ -2,7 +2,7 @@ import React from 'react';
 import Resizer from 'react-image-file-resizer';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import {Avatar, Badge} from 'antd';
+import { Avatar, Badge } from 'antd';
 
 
 const FileUpload = ({ values, setValues, setLoading }) => {
@@ -58,62 +58,62 @@ const FileUpload = ({ values, setValues, setLoading }) => {
     }
     const handleImageRemove = (public_id) => {
         setLoading(true);
-       // console.log('remove image',id);
+        // console.log('remove image',id);
 
-       axios.post(`${process.env.REACT_APP_API}//removeimage`, {public_id},
-       {
-           headers: {
-               authtoken: user ? user.token : "",
-           },
-       }
-       )
-       .then((res)=>{
-           setLoading(false);
-           const {images} = values;
+        axios.post(`${process.env.REACT_APP_API}//removeimage`, { public_id },
+            {
+                headers: {
+                    authtoken: user ? user.token : "",
+                },
+            }
+        )
+            .then((res) => {
+                setLoading(false);
+                const { images } = values;
 
-           //below func sort out images after removal, filteredImages contains images expect deleted one
-           let filteredImages = images.filter((eachimg) => {
-               return eachimg.public_id !== public_id;
-           });
-           setValues({...values,images:filteredImages}); //updating state, remaining images to state after deleting
-       })
-    .catch((err)=>{
-        console.log(err);
-        setLoading(false);
-    });
+                //below func sort out images after removal, filteredImages contains images expect deleted one
+                let filteredImages = images.filter((eachimg) => {
+                    return eachimg.public_id !== public_id;
+                });
+                setValues({ ...values, images: filteredImages }); //updating state, remaining images to state after deleting
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            });
     }
     return (
 
         <div>
-        <div>
-            {values.images && values.images.map((image)=>(
-                <Badge 
-                count="X" 
-                key={image.public_id}  
-                onClick={() => handleImageRemove(image.public_id)}   
-                style={{cursor:"pointer"}}
-                > 
-                <Avatar 
-                src={image.url}
-                size={100}
-                shape="square"
-                className="ml-3 mb-3"
-                />
-                </Badge>
-            ))}
-        </div>
-        <div className="row">
-            <label className="btn btn-primary">
-                Choose files
-                <input
-                    type="file"
-                    multiple
-                    hidden
-                    accept="images/*"
-                    onChange={fileUploadAndResize}
-                />
-            </label>
-        </div>
+            <div>
+                {values.images && values.images.map((image) => (
+                    <Badge
+                        count="X"
+                        key={image.public_id}
+                        onClick={() => handleImageRemove(image.public_id)}
+                        style={{ cursor: "pointer" }}
+                    >
+                        <Avatar
+                            src={image.url}
+                            size={100}
+                            shape="square"
+                            className="ml-3 mb-3"
+                        />
+                    </Badge>
+                ))}
+            </div>
+            <div className="row">
+                <label className="btn btn-primary">
+                    Choose files
+                    <input
+                        type="file"
+                        multiple
+                        hidden
+                        accept="images/*"
+                        onChange={fileUploadAndResize}
+                    />
+                </label>
+            </div>
         </div>
     );
 };
