@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getProductsByCount } from '../functions/Product';
-
+import ProductCard from '../components/cards/ProductCard';
 
 const Home = () => {
 
@@ -12,17 +12,31 @@ const Home = () => {
     }, [])
 
     const loadAllProducts = () => {
-        getProductsByCount(1).then((res) => {
-            setProducts(res.data)
+        getProductsByCount(3).then((res) => {
+            setProducts(res.data);
+            setLoading(false);
         })
     }
 
 
     return (
-
         <div>
-            <p>Home</p>
-            {JSON.stringify(products)}
+            <div className="jumbotron">
+                {loading ? (<h4>Loading...</h4>) : (<h4>All Products</h4>)}
+                {/* {JSON.stringify(products)} */}
+            </div>
+            <div className="container">
+                <div className="row">
+                    {products.map((product) => (
+                        <div key={product._id} className="col-md-4">
+                            <ProductCard
+                                product={product}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+
         </div>
     );
 };
