@@ -49,3 +49,33 @@ exports.remove = async (req, res) => {
         return res.status(400).send('Delete Product Failed');
     }
 }
+
+exports.read = async (req, res) => {
+    let product = await Product.findOne({ slug: req.params.slug })
+        .populate("category")
+        .populate("subs")
+        .exec();
+    res.json(product);
+};
+
+//Optional to update slug bcz previous link get changed
+//new true is use to send data in response of new product after update, 
+//else old data b4 update will be set in response
+exports.update = async (req, res) => {
+    try {
+        if (req.body.title) {
+            req.body.slug = slugify(req.body.title);
+        }
+        const updated = await Product.findOneAndUpdate({ slug: req.params.slug },
+            req.body,
+            { new: true }
+        ).exec();
+
+        res.json(updated);
+    } catch (err) {
+        console.log("Product Update Error", err);
+        return res.status(400).json({
+            err: err.message,
+        });
+    }
+}

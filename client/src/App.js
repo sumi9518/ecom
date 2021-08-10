@@ -29,6 +29,7 @@ import SubCreate from './pages/admin/sub/SubCreate';
 import SubUpdate from './pages/admin/sub/SubUpdate';
 
 import ProductCreate from './pages/admin/product/ProductCreate';
+import ProductUpdate from './pages/admin/product/ProductUpdate';
 import AllProducts from './pages/admin/product/AllProducts';
 
 const App = () => {
@@ -81,6 +82,7 @@ const App = () => {
         <AdminRoutes exact path="/admin/sub/:slug" component={SubUpdate} />
         <AdminRoutes exact path="/admin/product" component={ProductCreate} />
         <AdminRoutes exact path="/admin/products" component={AllProducts} />
+        <AdminRoutes exact path="/admin/product/:slug" component={ProductUpdate} />
       </Switch>
     </div>
   );
