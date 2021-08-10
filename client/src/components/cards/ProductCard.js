@@ -4,6 +4,7 @@ import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Link } from 'react-router-dom';
 import laptop from '../../images/laptop.png';
 
+
 const { Meta } = Card;
 
 const ProductCard = ({ product }) => {
