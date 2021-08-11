@@ -31,9 +31,12 @@ export const updateProduct = async (slug, product, authtoken) =>
     });
 
 //based on sort & orderby
-export const getproducts = async (sort, order, limit) =>
+export const getproducts = async (sort, order, page) =>
     await axios.post(`${process.env.REACT_APP_API}/products`, {
         sort,
         order,
-        limit,
+        page,
     });
+
+export const getProductsCount = async () =>
+    await axios.get(`${process.env.REACT_APP_API}/products/abc`);
