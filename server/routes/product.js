@@ -14,13 +14,14 @@ const { create, listAll, remove, read, update, list, productsCount } = require("
 //route - take's the request eg /api and give response
 
 router.get('/products/abc', productsCount);
+router.get("/product/:slug", read);
+router.get("/products/:count", listAll);
 
 router.post("/product", authCheck, adminCheck, create);
-router.get("/products/:count", listAll);
-router.delete("/product/:slug", authCheck, adminCheck, remove)
-router.get("/product/:slug", read);
-router.put("/product/:slug", authCheck, adminCheck, update);
 router.post('/products', list);
 
+router.put("/product/:slug", authCheck, adminCheck, update);
+
+router.delete("/product/:slug", authCheck, adminCheck, remove)
 
 module.exports = router;
