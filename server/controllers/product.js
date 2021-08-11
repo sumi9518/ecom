@@ -79,3 +79,19 @@ exports.update = async (req, res) => {
         });
     }
 }
+exports.list = async (req, res) => {
+    try {
+        //createdAt or updatedAt, desc or asc, 3
+        const { sort, order, limit } = req.body
+        const products = await Product.find({})
+            .populate('category')
+            .populate('subs')
+            .sort([[sort, order]])              //2 braces are used based on 2 arguments passed
+            .limit(limit)
+            .exec();
+        res.json(products);
+
+    } catch (err) {
+        console.log(err);
+    }
+}

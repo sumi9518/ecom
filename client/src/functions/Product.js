@@ -1,3 +1,4 @@
+import { SELECTION_INVERT } from 'antd/lib/table/hooks/useSelection';
 import axios from 'axios';
 
 
@@ -27,4 +28,12 @@ export const updateProduct = async (slug, product, authtoken) =>
         headers: {
             authtoken,
         },
+    });
+
+//based on sort & orderby
+export const getproducts = async (sort, order, limit) =>
+    await axios.post(`${process.env.REACT_APP_API}/products`, {
+        sort,
+        order,
+        limit,
     });
