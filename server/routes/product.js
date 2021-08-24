@@ -8,7 +8,7 @@ const { authCheck, adminCheck } = require('../middlewares/auth');
 
 
 //controller
-const { create, listAll, remove, read, update, list, productsCount } = require("../controllers/product"); //importing from  controller
+const { create, listAll, remove, read, update, list, productsCount, productStar } = require("../controllers/product"); //importing from  controller
 
 
 //route - take's the request eg /api and give response
@@ -23,5 +23,9 @@ router.post('/products', list);
 router.put("/product/:slug", authCheck, adminCheck, update);
 
 router.delete("/product/:slug", authCheck, adminCheck, remove)
+
+//Rating
+
+router.put("/product/star/:productId", authCheck, productStar);
 
 module.exports = router;
