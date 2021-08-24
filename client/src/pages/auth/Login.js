@@ -24,10 +24,19 @@ const Login = ({ history }) => {
     let dispatch = useDispatch();
 
     const roleBasedRedirect = (res) => {
-        if (res.data.role === "admin") {
-            history.push('/admin/dashboard');
-        } else {
-            history.push('/user/history');
+
+        //check if intended to specific path
+        let intended = history.location.state;
+
+        if (intended) {
+            history.push(intended.from);
+        }
+        else {
+            if (res.data.role === "admin") {
+                history.push('/admin/dashboard');
+            } else {
+                history.push('/user/history');
+            }
         }
     };
 
@@ -35,9 +44,15 @@ const Login = ({ history }) => {
 
 
     useEffect(() => {
-        if (user && user.token) {
-            history.push("/");
+        let intended = history.location.state;
+        if (intended) {
+            return;
+        } else {
+            if (user && user.token) {
+                history.push("/");
+            }
         }
+
     }, [user, history]); //as soon as we have user or user changes we redirect (useEffect runs when comp mounts)
 
 

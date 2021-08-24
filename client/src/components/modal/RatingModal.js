@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { Modal, Button } from 'antd';
 import { useSelector } from 'react-redux';
 import { StarOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 
 //can't use history as this is not main comp (not called in app.js) but child of SingleProduct so using hook to get history
 
@@ -13,13 +13,20 @@ const RatingModal = ({ children }) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     let history = useHistory();
+    let params = useParams();
+
+    console.log(params);
 
     const handleModal = () => {
         if (user && user.token) {
             setModalVisible(true);
 
         } else {
-            history.push("/login");
+            //to push back to same page after login
+            history.push({
+                pathname: '/login',
+                state: { from: `/product/${params.slug}` },
+            });
         }
     }
 
