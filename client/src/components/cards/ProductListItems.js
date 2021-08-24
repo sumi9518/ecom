@@ -37,7 +37,7 @@ const ProductListItems = ({ product }) => {
                                 to={`/sub/${s.slug}`}
                                 className="label label-default label-pill float-right"
                             >
-                                {s.name}
+                                {s.name} {"  "}
                             </Link>
                         )}
                     </li>
