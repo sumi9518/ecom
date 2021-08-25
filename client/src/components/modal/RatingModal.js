@@ -15,7 +15,7 @@ const RatingModal = ({ children }) => {
     let history = useHistory();
     let params = useParams();
 
-    console.log(params);
+    //console.log(params);
 
     const handleModal = () => {
         if (user && user.token) {

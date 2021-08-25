@@ -1,23 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { getProduct } from '../functions/Product';
+import { getProduct, productStar } from '../functions/Product';
 import SingleProduct from '../components/cards/SingleProduct';
+import { useSelector } from 'react-redux';
 
 const Product = ({ match }) => {
     const [product, setProduct] = useState([]);
+    const [star, setStar] = useState(0);
 
     const { slug } = match.params;
+
+    const { user } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
         loadSingleProduct();
     }, [slug]);
 
-    const loadSingleProduct = () =>
+    const loadSingleProduct = () => {
         getProduct(slug).then((res) => setProduct(res.data));
+    }
+
+
+    const onStarClick = (newRating, name) => {
+        // console.log(newRating);
+        setStar(newRating);
+        productStar(name, newRating, user.token)
+            .then((res) => {
+                console.log('rating clicked', res.data);
+                loadSingleProduct();
+            });
+    }
+
+
+
 
     return (
         <div className="container-fluid">
             <div className="row pt-4">
-                <SingleProduct product={product} />
+                <SingleProduct
+                    product={product}
+                    onStarClick={onStarClick}
+                    star={star}
+                />
             </div>
 
             <div className="row">
