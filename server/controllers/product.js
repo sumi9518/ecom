@@ -134,15 +134,21 @@ exports.productsCount = async (req, res) => {
 //Star Rating
 
 exports.productStar = async (req, res) => {
-    const product = await Product.findById(req.params.productId).exec()
-    const user = await User.findOne({ email: req.user.email }).exec()
-    const { star } = req.body
+    const product = await Product.findById(req.params.productId).exec();
+    const user = await User.findOne({ email: req.user.email }).exec();
+    const { star } = req.body;
 
     //check who is updating ?
     //check if the user is added rating for its new rating ?
 
-    let existingRatingObject = product.ratings.find((element) => (element.postedBy == user._id)) //for === use .tostring for postedBy and user._id
+    let existingRatingObject = product.ratings.find(
 
+        (element) => element.postedBy.toString() === user._id.toString()
+
+    ); //for === use .tostring for postedBy and user._id
+
+    console.log("user id", user._id)
+    console.log("existing", existingRatingObject.postedBy)
     //if no rating found
     if (existingRatingObject === undefined) {
         let rating = await Product.findByIdAndUpdate(product._id, {             //takes parameter to find and parameter to update
@@ -156,15 +162,15 @@ exports.productStar = async (req, res) => {
 
     //if rating found
     else {
-        const ratingUpdate = await Product.updateOne(
+        const ratingUpdated = await Product.updateOne(
             {
-                ratings: { $eleMatch: existingRatingObject },
+                ratings: { $elemMatch: existingRatingObject },
             },
-            { $set: { "rating.$.star": star } },
+            { $set: { "ratings.$.star": star } },
             { new: true }
         ).exec();
-        console.log("Rating is Updated", ratingUpdate);
-        console.log(ratingUpdate);
+        console.log("ratingUpdated", ratingUpdated);
+        res.json(ratingUpdated);
     }
 
 }

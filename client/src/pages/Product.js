@@ -15,6 +15,19 @@ const Product = ({ match }) => {
         loadSingleProduct();
     }, [slug]);
 
+    useEffect(() => {
+        console.log("OUT-->product.ratings", product.ratings, "user", user);
+        if (product.ratings && user) {
+            console.log("IN-> product.ratings", product.ratings, "user._id", user.uid);
+            let existingRatingObject = product.ratings.find(
+                (ele) => ele.postedBy.toString() === user.uid.toString()
+            );
+            console.log("ex", existingRatingObject);
+            existingRatingObject && setStar(existingRatingObject.star); // current user's star
+        }
+    });
+
+
     const loadSingleProduct = () => {
         getProduct(slug).then((res) => setProduct(res.data));
     }
@@ -25,7 +38,7 @@ const Product = ({ match }) => {
         setStar(newRating);
         productStar(name, newRating, user.token)
             .then((res) => {
-                console.log('rating clicked', res.data);
+                // console.log('rating clicked', res.data);
                 loadSingleProduct();
             });
     }
