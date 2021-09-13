@@ -16,7 +16,7 @@ const Product = ({ match }) => {
     }, [slug]);
 
     useEffect(() => {
-        console.log("OUT-->product.ratings", product.ratings, "user", user);
+        // console.log("OUT-->product.ratings", product.ratings, "user", user);
         if (product.ratings && user) {
             console.log("IN-> product.ratings", product.ratings, "user._id", user.uid);
             let existingRatingObject = product.ratings.find(
