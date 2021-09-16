@@ -1,4 +1,5 @@
 const Category = require('../models/category');
+const Product = require('../models/product');
 const Sub = require('../models/sub');
 const slugify = require("slugify");
 
@@ -20,7 +21,15 @@ exports.list = async (req, res) => {
 
 exports.read = async (req, res) => {
     let category = await Category.findOne({ slug: req.params.slug }).exec();
-    res.json(category);
+    //res.json(category);
+    Product.find({ category: category })
+        .populate('category')
+        .populate('postedBy', "_id name")
+        .exec();
+    res.json({
+        category,
+        products,
+    });
 };
 
 //update takes 2 arguments first to find and second to update. new true is used to get updated one in res json
