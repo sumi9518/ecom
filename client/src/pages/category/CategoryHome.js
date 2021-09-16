@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCategories } from '../../functions/category';
+import { getCategory } from '../../functions/category';
 import { Link } from 'react-router-dom';
 import ProductCard from '../../components/cards/ProductCard';
 
@@ -13,7 +13,7 @@ const CategoryHome = ({ match }) => {
 
     useEffect(() => {
         setLoading(true);
-        getCategories(slug)
+        getCategory(slug)
             .then(c => {
                 console.log(JSON.stringify(c.data, null, 4))
                 setCategory(c.data)

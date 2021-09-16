@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../../functions/category';
+import { getCategory } from '../../functions/category';
 
 const CategoryList = () => {
     const [category, setCategory] = useState([]);
@@ -8,7 +8,7 @@ const CategoryList = () => {
 
     useEffect(() => {
         setLoading(true);
-        getCategories()
+        getCategory()
             .then(c => {
                 setCategory(c.data);
                 setLoading(false);
